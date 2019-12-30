@@ -20,7 +20,8 @@ const styles = StyleSheet.create({
         height: "100%"
     },
     wrapper: {
-        backgroundColor: "#FCFFFF",
+        flex: 1,
+        backgroundColor: "#DDF1FD",
         maxWidth: "420px",
         width: "100%"
     }
