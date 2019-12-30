@@ -1,0 +1,24 @@
+{
+    "private": true,
+    "name": "workout_app",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/serjdmit/workout_app.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "workspaces": [
+        "packages/*"
+    ],
+    "bugs": {
+        "url": "https://github.com/serjdmit/workout_app/issues"
+    },
+    "homepage": "https://github.com/serjdmit/workout_app#readme"
+}
