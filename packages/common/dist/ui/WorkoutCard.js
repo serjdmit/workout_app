@@ -7,6 +7,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var mobx_react_lite_1 = require("mobx-react-lite");
 var React = __importStar(require("react"));
 var react_native_1 = require("react-native");
 var styles = react_native_1.StyleSheet.create({
@@ -18,7 +19,8 @@ var styles = react_native_1.StyleSheet.create({
         shadowOpacity: 0.3,
         shadowRadius: 3,
         flexDirection: "column",
-        padding: 10
+        padding: 10,
+        marginBottom: 10
     },
     topRow: {
         flexDirection: "row",
@@ -30,7 +32,7 @@ var styles = react_native_1.StyleSheet.create({
     },
     bottomRowText: {
         flexDirection: "row",
-        justifyContent: "space-evenly",
+        justifyContent: "space-between",
         marginTop: 15
     },
     circle: {
@@ -39,7 +41,8 @@ var styles = react_native_1.StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 25,
-        backgroundColor: "#08A642"
+        backgroundColor: "#08A642",
+        cursor: "pointer"
     },
     circleText: {
         fontFamily: "sans-serif",
@@ -56,22 +59,21 @@ var styles = react_native_1.StyleSheet.create({
         backgroundColor: "#D42B3C"
     }
 });
-exports.WorkoutCard = function (_a) {
-    var excercise = _a.excercise, repsAndWeight = _a.repsAndWeight, sets = _a.sets;
+exports.WorkoutCard = mobx_react_lite_1.observer(function (_a) {
+    var excercise = _a.excercise, repsAndWeight = _a.repsAndWeight, sets = _a.sets, onSetPress = _a.onSetPress;
     return (React.createElement(react_native_1.View, { style: styles.card },
         React.createElement(react_native_1.View, { style: styles.topRow },
             React.createElement(react_native_1.Text, { style: styles.topRowText }, excercise),
             React.createElement(react_native_1.Text, { style: styles.topRowText }, repsAndWeight)),
         React.createElement(react_native_1.View, { style: styles.bottomRowText }, sets.map(function (set, index) {
-            if (set === "") {
-                return (React.createElement(react_native_1.View, { style: [styles.circle, styles.gray] },
-                    React.createElement(react_native_1.Text, { key: set + index })));
-            }
             if (set === "X") {
                 return (React.createElement(react_native_1.View, { style: [styles.circle, styles.red] },
                     React.createElement(react_native_1.Text, { style: [styles.circleText], key: set + index }, "X")));
             }
-            return (React.createElement(react_native_1.View, { style: styles.circle, key: set + index },
+            if (set === "") {
+                return (React.createElement(react_native_1.TouchableOpacity, { onPress: function () { return onSetPress(index); }, style: [styles.circle, styles.gray], key: set + index }));
+            }
+            return (React.createElement(react_native_1.TouchableOpacity, { onPress: function () { return onSetPress(index); }, style: styles.circle, key: set + index },
                 React.createElement(react_native_1.Text, { style: styles.circleText }, set)));
         }))));
-};
+});
