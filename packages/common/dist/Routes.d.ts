@@ -1,2 +1,2 @@
 /// <reference types="react" />
-export declare const Routes: import("react").FunctionComponent<object>;
+export declare const Routes: () => JSX.Element;
