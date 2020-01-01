@@ -50,13 +50,13 @@ var styles = react_native_1.StyleSheet.create({
         color: "#fff"
     },
     darkText: {
-        color: "#18261D"
+        color: "#aaa"
     },
     gray: {
         backgroundColor: "#ccc"
     },
-    red: {
-        backgroundColor: "#D42B3C"
+    lightGray: {
+        backgroundColor: "#ddd"
     }
 });
 exports.WorkoutCard = mobx_react_lite_1.observer(function (_a) {
@@ -67,8 +67,11 @@ exports.WorkoutCard = mobx_react_lite_1.observer(function (_a) {
             React.createElement(react_native_1.Text, { style: styles.topRowText }, repsAndWeight)),
         React.createElement(react_native_1.View, { style: styles.bottomRowText }, sets.map(function (set, index) {
             if (set === "X") {
-                return (React.createElement(react_native_1.View, { style: [styles.circle, styles.red] },
-                    React.createElement(react_native_1.Text, { style: [styles.circleText], key: set + index }, "X")));
+                return (React.createElement(react_native_1.View, { style: [styles.circle, styles.lightGray] },
+                    React.createElement(react_native_1.Text, { style: [
+                            styles.circleText,
+                            styles.darkText
+                        ], key: set + index }, "X")));
             }
             if (set === "") {
                 return (React.createElement(react_native_1.TouchableOpacity, { onPress: function () { return onSetPress(index); }, style: [styles.circle, styles.gray], key: set + index }));

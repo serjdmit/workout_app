@@ -49,13 +49,13 @@ const styles = StyleSheet.create({
         color: "#fff"
     },
     darkText: {
-        color: "#18261D"
+        color: "#aaa"
     },
     gray: {
         backgroundColor: "#ccc"
     },
-    red: {
-        backgroundColor: "#D42B3C"
+    lightGray: {
+        backgroundColor: "#ddd"
     }
 });
 
@@ -71,9 +71,12 @@ export const WorkoutCard: React.FC<Props> = observer(
                     {sets.map((set, index) => {
                         if (set === "X") {
                             return (
-                                <View style={[styles.circle, styles.red]}>
+                                <View style={[styles.circle, styles.lightGray]}>
                                     <Text
-                                        style={[styles.circleText]}
+                                        style={[
+                                            styles.circleText,
+                                            styles.darkText
+                                        ]}
                                         key={set + index}
                                     >
                                         X

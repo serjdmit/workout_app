@@ -12,6 +12,7 @@ var React = __importStar(require("react"));
 var react_native_1 = require("react-native");
 var RootStore_1 = require("../stores/RootStore");
 var WorkoutCard_1 = require("../ui/WorkoutCard");
+var WorkoutTimer_1 = require("../ui/WorkoutTimer");
 var styles = react_native_1.StyleSheet.create({
     container: {
         flex: 1,
@@ -21,20 +22,29 @@ var styles = react_native_1.StyleSheet.create({
 });
 exports.CurrentWorkout = mobx_react_lite_1.observer(function () {
     var rootStore = React.useContext(RootStore_1.RootStoreContext);
-    return (React.createElement(react_native_1.View, { style: styles.container }, rootStore.workoutStore.currentExcercises.map(function (e) {
-        return (React.createElement(WorkoutCard_1.WorkoutCard, { onSetPress: function (setIndex) {
-                var value = e.sets[setIndex];
-                var newValue;
-                if (value === "") {
-                    newValue = "" + e.reps;
-                }
-                else if (value === "0") {
-                    newValue = "0";
-                }
-                else {
-                    newValue = "" + (parseInt(value) - 1);
-                }
-                e.sets[setIndex] = newValue;
-            }, key: e.excercise, sets: e.sets, excercise: e.excercise, repsAndWeight: e.numSets + "x" + e.reps + " " + e.weight }));
-    })));
+    React.useEffect(function () {
+        return function () {
+            rootStore.workoutTimerStore.stopTimer();
+        };
+    }, []);
+    return (React.createElement(react_native_1.View, { style: styles.container },
+        rootStore.workoutStore.currentExcercises.map(function (e) {
+            return (React.createElement(WorkoutCard_1.WorkoutCard, { onSetPress: function (setIndex) {
+                    rootStore.workoutTimerStore.startTimer();
+                    var value = e.sets[setIndex];
+                    var newValue;
+                    if (value === "") {
+                        newValue = "" + e.reps;
+                    }
+                    else if (value === "0") {
+                        rootStore.workoutTimerStore.stopTimer();
+                        newValue = "";
+                    }
+                    else {
+                        newValue = "" + (parseInt(value) - 1);
+                    }
+                    e.sets[setIndex] = newValue;
+                }, key: e.excercise, sets: e.sets, excercise: e.excercise, repsAndWeight: e.numSets + "x" + e.reps + " " + e.weight }));
+        }),
+        rootStore.workoutTimerStore.isRunning ? (React.createElement(WorkoutTimer_1.WorkoutTimer, { percent: rootStore.workoutTimerStore.percent, currentTime: rootStore.workoutTimerStore.display, onXPress: function () { return rootStore.workoutTimerStore.stopTimer(); } })) : null));
 });
