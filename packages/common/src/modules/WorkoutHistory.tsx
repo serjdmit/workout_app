@@ -1,9 +1,10 @@
 import { observer } from "mobx-react-lite";
 import * as React from "react";
-import { Button, FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import { RouteComponentProps } from "react-router";
 import { RootStoreContext } from "../stores/RootStore";
 import { CurrentExercise } from "../stores/WorkoutStore";
+import { Fab } from "../ui/Fab";
 import { HistoryCard } from "../ui/HistoryCard";
 
 interface Props extends RouteComponentProps {}
@@ -15,6 +16,9 @@ const styles = StyleSheet.create({
     cardContainer: {
         flex: 1,
         padding: 10
+    },
+    container: {
+        flex: 1
     }
 });
 
@@ -28,11 +32,6 @@ export const WorkoutHistory: React.FC<Props> = observer(({ history }) => {
 
     Object.entries(rootStore.workoutStore.history).forEach(
         ([date, exercises], i) => {
-            // const hc = (
-            //     <View key={dt} style={styles.cardContainer}>
-            //         <HistoryCard header={dt} currentExercises={v} />
-            //     </View>
-            // );
             if (i % 3 === 0) {
                 rows.push([
                     {
@@ -50,38 +49,7 @@ export const WorkoutHistory: React.FC<Props> = observer(({ history }) => {
     );
 
     return (
-        <View>
-            <Text>WorkoutHistory page</Text>
-            <Button
-                title="create workout"
-                onPress={() => {
-                    rootStore.workoutStore.currentExercises.push(
-                        {
-                            exercise: "Squat",
-                            numSets: 5,
-                            reps: 5,
-                            sets: ["", "", "", "", ""],
-                            weight: 140
-                        },
-                        {
-                            exercise: "Bench Press",
-                            numSets: 5,
-                            reps: 5,
-                            sets: ["5", "5", "5", "5", "5"],
-                            weight: 80
-                        },
-
-                        {
-                            exercise: "Deadlift",
-                            numSets: 1,
-                            reps: 5,
-                            sets: ["5", "X", "X", "X", "X"],
-                            weight: 140
-                        }
-                    );
-                    history.push("/current-workout");
-                }}
-            />
+        <View style={styles.container}>
             <FlatList
                 renderItem={({ item }) => (
                     <View style={styles.row}>
@@ -111,6 +79,86 @@ export const WorkoutHistory: React.FC<Props> = observer(({ history }) => {
                 keyExtractor={item =>
                     item.reduce((pv, cv) => pv + " " + cv.date, "")
                 }
+            />
+            <Fab
+                onPress={() => {
+                    if (!rootStore.workoutStore.hasCurrentWorkout) {
+                        const {
+                            currentBarbellRow,
+                            currentBenchPress,
+                            currentDeadlift,
+                            currentOverheadPress,
+                            currentSquat
+                        } = rootStore.workoutStore;
+                        const emptySets = ["", "", "", "", ""];
+                        if (rootStore.workoutStore.lastWorkoutType === "b") {
+                            rootStore.workoutStore.currentExercises.push(
+                                {
+                                    exercise: "Squat",
+                                    numSets: 5,
+                                    reps: 5,
+                                    sets: [...emptySets],
+                                    weight: currentSquat
+                                },
+                                {
+                                    exercise: "Bench Press",
+                                    numSets: 5,
+                                    reps: 5,
+                                    sets: [...emptySets],
+                                    weight: currentBenchPress
+                                },
+
+                                {
+                                    exercise: "Deadlift",
+                                    numSets: 1,
+                                    reps: 5,
+                                    sets: ["", "X", "X", "X", "X"],
+                                    weight: currentDeadlift
+                                }
+                            );
+
+                            (rootStore.workoutStore.currentSquat += 2.5),
+                                (rootStore.workoutStore.currentBenchPress += 2.5),
+                                (rootStore.workoutStore.currentDeadlift += 2.5);
+                        } else {
+                            rootStore.workoutStore.currentExercises.push(
+                                {
+                                    exercise: "Squat",
+                                    numSets: 5,
+                                    reps: 5,
+                                    sets: [...emptySets],
+                                    weight: currentSquat
+                                },
+                                {
+                                    exercise: "Barrbell Row",
+                                    numSets: 5,
+                                    reps: 5,
+                                    sets: [...emptySets],
+                                    weight: currentBarbellRow
+                                },
+
+                                {
+                                    exercise: "Overhead Press",
+                                    numSets: 5,
+                                    reps: 5,
+                                    sets: [...emptySets],
+                                    weight: currentDeadlift
+                                }
+                            );
+
+                            (rootStore.workoutStore.currentSquat += 2.5),
+                                (rootStore.workoutStore.currentOverheadPress += 2.5),
+                                (rootStore.workoutStore.currentBarbellRow += 2.5);
+                        }
+                    }
+
+                    rootStore.workoutStore.lastWorkoutType =
+                        rootStore.workoutStore.lastWorkoutType === "a"
+                            ? "b"
+                            : "a";
+
+                    history.push("/current-workout");
+                }}
             />
         </View>
     );

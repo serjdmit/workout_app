@@ -42,7 +42,6 @@ exports.CurrentWorkout = mobx_react_lite_1.observer(function (_a) {
             (isCurrentWorkout
                 ? rootStore.workoutStore.currentExercises
                 : rootStore.workoutStore.history[dataKey]).map(function (e) {
-                console.log(e);
                 return (React.createElement(WorkoutCard_1.WorkoutCard, { onSetPress: function (setIndex) {
                         rootStore.workoutTimerStore.startTimer();
                         var value = e.sets[setIndex];

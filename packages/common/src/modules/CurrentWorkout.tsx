@@ -53,7 +53,6 @@ export const CurrentWorkout: React.FC<Props> = observer(
                         ? rootStore.workoutStore.currentExercises
                         : rootStore.workoutStore.history[dataKey]
                     ).map(e => {
-                        console.log(e);
                         return (
                             <WorkoutCard
                                 onSetPress={setIndex => {
