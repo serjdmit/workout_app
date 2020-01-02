@@ -20,42 +20,52 @@ var WorkoutTimer_1 = require("../ui/WorkoutTimer");
 var styles = react_native_1.StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fafafa",
-        padding: 10
+        backgroundColor: "#fafafa"
+    },
+    scrollContainer: {
+        padding: 10,
+        marginBottom: 50
     }
 });
 exports.CurrentWorkout = mobx_react_lite_1.observer(function (_a) {
-    var history = _a.history;
+    var history = _a.history, _b = _a.match.params, day = _b.day, month = _b.month, year = _b.year;
     var rootStore = React.useContext(RootStore_1.RootStoreContext);
     React.useEffect(function () {
         return function () {
             rootStore.workoutTimerStore.stopTimer();
         };
     }, []);
+    var isCurrentWorkout = !year && !month && !day;
+    var dataKey = year + "-" + month + "-" + day;
     return (React.createElement(react_native_1.View, { style: styles.container },
-        rootStore.workoutStore.currentExercises.map(function (e) {
-            return (React.createElement(WorkoutCard_1.WorkoutCard, { onSetPress: function (setIndex) {
-                    rootStore.workoutTimerStore.startTimer();
-                    var value = e.sets[setIndex];
-                    var newValue;
-                    if (value === "") {
-                        newValue = "" + e.reps;
+        React.createElement(react_native_1.ScrollView, { keyboardShouldPersistTaps: "always", contentContainerStyle: styles.scrollContainer },
+            (isCurrentWorkout
+                ? rootStore.workoutStore.currentExercises
+                : rootStore.workoutStore.history[dataKey]).map(function (e) {
+                console.log(e);
+                return (React.createElement(WorkoutCard_1.WorkoutCard, { onSetPress: function (setIndex) {
+                        rootStore.workoutTimerStore.startTimer();
+                        var value = e.sets[setIndex];
+                        var newValue;
+                        if (value === "") {
+                            newValue = "" + e.reps;
+                        }
+                        else if (value === "0") {
+                            rootStore.workoutTimerStore.stopTimer();
+                            newValue = "";
+                        }
+                        else {
+                            newValue = "" + (parseInt(value) - 1);
+                        }
+                        e.sets[setIndex] = newValue;
+                    }, key: e.exercise, sets: e.sets, exercise: e.exercise, repsAndWeight: e.numSets + "x" + e.reps + " " + e.weight }));
+            }),
+            React.createElement(react_native_1.Button, { title: "SAVE", onPress: function () {
+                    if (isCurrentWorkout) {
+                        rootStore.workoutStore.history[dayjs_1.default().format("YYYY-MM-DD")] = rootStore.workoutStore.currentExercises;
+                        rootStore.workoutStore.currentExercises = [];
                     }
-                    else if (value === "0") {
-                        rootStore.workoutTimerStore.stopTimer();
-                        newValue = "";
-                    }
-                    else {
-                        newValue = "" + (parseInt(value) - 1);
-                    }
-                    e.sets[setIndex] = newValue;
-                }, key: e.exercise, sets: e.sets, exercise: e.exercise, repsAndWeight: e.numSets + "x" + e.reps + " " + e.weight }));
-        }),
-        React.createElement(react_native_1.Button, { title: "SAVE", onPress: function () {
-                rootStore.workoutStore.history[dayjs_1.default(new Date(+new Date() -
-                    Math.floor(Math.random() * 10000000000))).format("YYYY-MM-DD")] = rootStore.workoutStore.currentExercises;
-                rootStore.workoutStore.currentExercises = [];
-                history.push("/");
-            } }),
+                    history.push("/");
+                } })),
         rootStore.workoutTimerStore.isRunning ? (React.createElement(WorkoutTimer_1.WorkoutTimer, { percent: rootStore.workoutTimerStore.percent, currentTime: rootStore.workoutTimerStore.display, onXPress: function () { return rootStore.workoutTimerStore.stopTimer(); } })) : null));
 });
