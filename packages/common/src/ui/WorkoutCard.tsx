@@ -1,24 +1,17 @@
 import { observer } from "mobx-react-lite";
 import * as React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Card } from "./Сard";
 
 interface Props {
-    excercise: string;
+    exercise: string;
     repsAndWeight: string;
     sets: string[];
     onSetPress: (index: number) => void;
 }
 
 const styles = StyleSheet.create({
-    card: {
-        borderRadius: 3,
-        backgroundColor: "#fff",
-        shadowColor: "#000",
-        shadowOffset: { width: 2, height: 2 },
-        shadowOpacity: 0.3,
-        shadowRadius: 3,
-        flexDirection: "column",
-        padding: 10,
+    cardContainer: {
         marginBottom: 10
     },
     topRow: {
@@ -60,50 +53,57 @@ const styles = StyleSheet.create({
 });
 
 export const WorkoutCard: React.FC<Props> = observer(
-    ({ excercise, repsAndWeight, sets, onSetPress }) => {
+    ({ exercise, repsAndWeight, sets, onSetPress }) => {
         return (
-            <View style={styles.card}>
-                <View style={styles.topRow}>
-                    <Text style={styles.topRowText}>{excercise}</Text>
-                    <Text style={styles.topRowText}>{repsAndWeight}</Text>
-                </View>
-                <View style={styles.bottomRowText}>
-                    {sets.map((set, index) => {
-                        if (set === "X") {
-                            return (
-                                <View style={[styles.circle, styles.lightGray]}>
-                                    <Text
+            <View style={styles.cardContainer}>
+                <Card>
+                    <View style={styles.topRow}>
+                        <Text style={styles.topRowText}>{exercise}</Text>
+                        <Text style={styles.topRowText}>{repsAndWeight}</Text>
+                    </View>
+                    <View style={styles.bottomRowText}>
+                        {sets.map((set, index) => {
+                            if (set === "X") {
+                                return (
+                                    <View
                                         style={[
-                                            styles.circleText,
-                                            styles.darkText
+                                            styles.circle,
+                                            styles.lightGray
                                         ]}
-                                        key={set + index}
                                     >
-                                        X
-                                    </Text>
-                                </View>
-                            );
-                        }
-                        if (set === "") {
+                                        <Text
+                                            style={[
+                                                styles.circleText,
+                                                styles.darkText
+                                            ]}
+                                            key={set + index}
+                                        >
+                                            X
+                                        </Text>
+                                    </View>
+                                );
+                            }
+                            if (set === "") {
+                                return (
+                                    <TouchableOpacity
+                                        onPress={() => onSetPress(index)}
+                                        style={[styles.circle, styles.gray]}
+                                        key={set + index}
+                                    />
+                                );
+                            }
                             return (
                                 <TouchableOpacity
                                     onPress={() => onSetPress(index)}
-                                    style={[styles.circle, styles.gray]}
+                                    style={styles.circle}
                                     key={set + index}
-                                />
+                                >
+                                    <Text style={styles.circleText}>{set}</Text>
+                                </TouchableOpacity>
                             );
-                        }
-                        return (
-                            <TouchableOpacity
-                                onPress={() => onSetPress(index)}
-                                style={styles.circle}
-                                key={set + index}
-                            >
-                                <Text style={styles.circleText}>{set}</Text>
-                            </TouchableOpacity>
-                        );
-                    })}
-                </View>
+                        })}
+                    </View>
+                </Card>
             </View>
         );
     }
