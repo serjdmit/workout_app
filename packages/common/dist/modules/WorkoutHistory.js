@@ -21,12 +21,23 @@ var RootStore_1 = require("../stores/RootStore");
 var Fab_1 = require("../ui/Fab");
 var HistoryCard_1 = require("../ui/HistoryCard");
 var styles = react_native_1.StyleSheet.create({
+    heading: {
+        marginHorizontal: "auto",
+        padding: 40,
+        paddingBottom: 20,
+        fontSize: 24,
+        color: "#fff",
+        fontFamily: "'lucida grande', tahoma, verdana, arial, sans-serif"
+    },
     row: {
-        flexDirection: "row"
+        flexDirection: "row",
+        paddingTop: 20,
+        paddingHorizontal: 20
     },
     cardContainer: {
         flex: 1,
-        padding: 10
+        paddingVertical: 10,
+        paddingHorizontal: 10
     },
     container: {
         flex: 1
@@ -38,7 +49,7 @@ exports.WorkoutHistory = mobx_react_lite_1.observer(function (_a) {
     var rows = [];
     Object.entries(rootStore.workoutStore.history).forEach(function (_a, i) {
         var date = _a[0], exercises = _a[1];
-        if (i % 3 === 0) {
+        if (i % 2 === 0) {
             rows.push([
                 {
                     date: date,
@@ -54,6 +65,7 @@ exports.WorkoutHistory = mobx_react_lite_1.observer(function (_a) {
         }
     });
     return (React.createElement(react_native_1.View, { style: styles.container },
+        React.createElement(react_native_1.Text, { style: styles.heading }, "Gym Routine"),
         React.createElement(react_native_1.FlatList, { renderItem: function (_a) {
                 var item = _a.item;
                 return (React.createElement(react_native_1.View, { style: styles.row },
@@ -65,8 +77,8 @@ exports.WorkoutHistory = mobx_react_lite_1.observer(function (_a) {
                                     history.push("/workout/" + parts[0] + "/" + parts[1] + "/" + parts[2]);
                                 }, header: date, currentExercises: exercises })));
                     }),
-                    item.length < 3 ? (React.createElement(react_native_1.View, { style: styles.cardContainer })) : null,
-                    item.length < 2 ? (React.createElement(react_native_1.View, { style: styles.cardContainer })) : null));
+                    item.length < 2 ? (React.createElement(react_native_1.View, { style: styles.cardContainer })) : null,
+                    item.length < 1 ? (React.createElement(react_native_1.View, { style: styles.cardContainer })) : null));
             }, data: rows, keyExtractor: function (item) {
                 return item.reduce(function (pv, cv) { return pv + " " + cv.date; }, "");
             } }),
@@ -106,7 +118,7 @@ exports.WorkoutHistory = mobx_react_lite_1.observer(function (_a) {
                             sets: __spreadArrays(emptySets),
                             weight: currentSquat
                         }, {
-                            exercise: "Barrbell Row",
+                            exercise: "Barbell Row",
                             numSets: 5,
                             reps: 5,
                             sets: __spreadArrays(emptySets),
@@ -116,7 +128,7 @@ exports.WorkoutHistory = mobx_react_lite_1.observer(function (_a) {
                             numSets: 5,
                             reps: 5,
                             sets: __spreadArrays(emptySets),
-                            weight: currentDeadlift
+                            weight: currentOverheadPress
                         });
                         (rootStore.workoutStore.currentSquat += 2.5),
                             (rootStore.workoutStore.currentOverheadPress += 2.5),

@@ -13,7 +13,16 @@ var react_native_1 = require("react-native");
 var _ard_1 = require("./\u0421ard");
 var styles = react_native_1.StyleSheet.create({
     cardContainer: {
-        marginBottom: 10
+        shadowColor: "rgb(100, 100, 100)",
+        shadowOffset: { width: -9, height: -9 },
+        shadowRadius: 16,
+        shadowOpacity: 0.3,
+        marginBottom: 20,
+        borderRadius: 20,
+        paddingTop: 5
+    },
+    card: {
+        backgroundColor: "rgb(23, 23, 23)"
     },
     topRow: {
         flexDirection: "row",
@@ -21,12 +30,14 @@ var styles = react_native_1.StyleSheet.create({
     },
     topRowText: {
         fontSize: 18,
-        fontFamily: "sans-serif"
+        marginBottom: 10,
+        color: "#fff",
+        fontFamily: "'lucida grande', tahoma, verdana, arial, sans-serif"
     },
     bottomRowText: {
         flexDirection: "row",
         justifyContent: "space-between",
-        marginTop: 15
+        marginVertical: 10
     },
     circle: {
         height: 50,
@@ -34,22 +45,30 @@ var styles = react_native_1.StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 25,
-        backgroundColor: "#08A642",
-        cursor: "pointer"
+        backgroundColor: "#222",
+        cursor: "pointer",
+        shadowColor: "#000",
+        shadowOffset: { width: 9, height: 9 },
+        shadowRadius: 9,
+        shadowOpacity: 1
+    },
+    circleShadow: {
+        borderRadius: 25,
+        shadowColor: "rgb(100, 100, 100)",
+        shadowOffset: { width: -9, height: -9 },
+        shadowRadius: 16,
+        shadowOpacity: 0.3
+    },
+    circleGreen: {
+        shadowColor: "#2d5039"
+    },
+    circleRed: {
+        shadowColor: "#2d5039"
     },
     circleText: {
-        fontFamily: "sans-serif",
+        fontFamily: "'lucida grande', tahoma, verdana, arial, sans-serif",
         fontSize: 20,
         color: "#fff"
-    },
-    darkText: {
-        color: "#aaa"
-    },
-    gray: {
-        backgroundColor: "#ccc"
-    },
-    lightGray: {
-        backgroundColor: "#ddd"
     }
 });
 exports.WorkoutCard = mobx_react_lite_1.observer(function (_a) {
@@ -61,19 +80,16 @@ exports.WorkoutCard = mobx_react_lite_1.observer(function (_a) {
                 React.createElement(react_native_1.Text, { style: styles.topRowText }, repsAndWeight)),
             React.createElement(react_native_1.View, { style: styles.bottomRowText }, sets.map(function (set, index) {
                 if (set === "X") {
-                    return (React.createElement(react_native_1.View, { style: [
-                            styles.circle,
-                            styles.lightGray
-                        ] },
-                        React.createElement(react_native_1.Text, { style: [
-                                styles.circleText,
-                                styles.darkText
-                            ], key: set + index }, "X")));
+                    return (React.createElement(react_native_1.View, { style: styles.circleShadow },
+                        React.createElement(react_native_1.View, { style: styles.circle },
+                            React.createElement(react_native_1.Text, { style: styles.circleText, key: set + index }, "X"))));
                 }
                 if (set === "") {
-                    return (React.createElement(react_native_1.TouchableOpacity, { onPress: function () { return onSetPress(index); }, style: [styles.circle, styles.gray], key: set + index }));
+                    return (React.createElement(react_native_1.View, { style: styles.circleShadow },
+                        React.createElement(react_native_1.TouchableOpacity, { onPress: function () { return onSetPress(index); }, style: styles.circle, key: set + index })));
                 }
-                return (React.createElement(react_native_1.TouchableOpacity, { onPress: function () { return onSetPress(index); }, style: styles.circle, key: set + index },
-                    React.createElement(react_native_1.Text, { style: styles.circleText }, set)));
+                return (React.createElement(react_native_1.View, { style: styles.circleShadow },
+                    React.createElement(react_native_1.TouchableOpacity, { onPress: function () { return onSetPress(index); }, style: styles.circle, key: set + index },
+                        React.createElement(react_native_1.Text, { style: styles.circleText }, set))));
             })))));
 });

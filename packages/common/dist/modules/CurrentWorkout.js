@@ -20,11 +20,45 @@ var WorkoutTimer_1 = require("../ui/WorkoutTimer");
 var styles = react_native_1.StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fafafa"
+        backgroundColor: "rgb(23, 23, 23)"
     },
     scrollContainer: {
-        padding: 10,
-        marginBottom: 50
+        padding: 30,
+        marginBottom: 20
+    },
+    buttonShadowLight: {
+        borderRadius: 20,
+        shadowColor: "rgb(100, 100, 100)",
+        shadowOffset: { width: -9, height: -9 },
+        shadowRadius: 16,
+        shadowOpacity: 0.3
+    },
+    heading: {
+        marginHorizontal: "auto",
+        padding: 40,
+        paddingBottom: 20,
+        fontSize: 24,
+        color: "#fff",
+        fontFamily: "'lucida grande', tahoma, verdana, arial, sans-serif"
+    },
+    button: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 20,
+        shadowColor: "#000",
+        shadowOffset: { width: 9, height: 9 },
+        shadowRadius: 16,
+        shadowOpacity: 1,
+        height: 60,
+        width: "100%",
+        padding: 20
+    },
+    buttonText: {
+        fontSize: 18,
+        fontFamily: "tahoma, verdana, arial, sans-serif",
+        fontWeight: "bold",
+        color: "#fff"
     }
 });
 exports.CurrentWorkout = mobx_react_lite_1.observer(function (_a) {
@@ -38,6 +72,7 @@ exports.CurrentWorkout = mobx_react_lite_1.observer(function (_a) {
     var isCurrentWorkout = !year && !month && !day;
     var dataKey = year + "-" + month + "-" + day;
     return (React.createElement(react_native_1.View, { style: styles.container },
+        React.createElement(react_native_1.Text, { style: styles.heading }, "Current Workout"),
         React.createElement(react_native_1.ScrollView, { keyboardShouldPersistTaps: "always", contentContainerStyle: styles.scrollContainer },
             (isCurrentWorkout
                 ? rootStore.workoutStore.currentExercises
@@ -59,12 +94,14 @@ exports.CurrentWorkout = mobx_react_lite_1.observer(function (_a) {
                         e.sets[setIndex] = newValue;
                     }, key: e.exercise, sets: e.sets, exercise: e.exercise, repsAndWeight: e.numSets + "x" + e.reps + " " + e.weight }));
             }),
-            React.createElement(react_native_1.Button, { title: "SAVE", onPress: function () {
-                    if (isCurrentWorkout) {
-                        rootStore.workoutStore.history[dayjs_1.default().format("YYYY-MM-DD")] = rootStore.workoutStore.currentExercises;
-                        rootStore.workoutStore.currentExercises = [];
-                    }
-                    history.push("/");
-                } })),
+            React.createElement(react_native_1.View, { style: styles.buttonShadowLight },
+                React.createElement(react_native_1.TouchableHighlight, { style: styles.button, onPress: function () {
+                        if (isCurrentWorkout) {
+                            rootStore.workoutStore.history[dayjs_1.default().format("YYYY-MM-DD")] = rootStore.workoutStore.currentExercises;
+                            rootStore.workoutStore.currentExercises = [];
+                        }
+                        history.push("/");
+                    } },
+                    React.createElement(react_native_1.Text, { style: styles.buttonText }, "Save")))),
         rootStore.workoutTimerStore.isRunning ? (React.createElement(WorkoutTimer_1.WorkoutTimer, { percent: rootStore.workoutTimerStore.percent, currentTime: rootStore.workoutTimerStore.display, onXPress: function () { return rootStore.workoutTimerStore.stopTimer(); } })) : null));
 });
