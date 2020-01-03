@@ -9,31 +9,33 @@ interface Props {
 
 const styles = StyleSheet.create({
     container: {
+        height: 50,
+        backgroundColor: "rgb(0, 0, 0)",
         position: "absolute",
         left: 0,
-        bottom: 0,
-        height: 50,
-        width: "100%",
-        backgroundColor: "#375D32"
+        right: 0,
+        bottom: 0
     },
     row: {
         justifyContent: "space-between",
         flexDirection: "row",
         alignItems: "center",
         flex: 1,
-        paddingHorizontal: 30
+        paddingHorizontal: 20
     },
     text: {
         color: "#fff",
-        fontSize: 18
+        fontSize: 18,
+        fontFamily: "'lucida grande', tahoma, verdana, arial, sans-serif"
     },
     x: {
         fontSize: 20,
-        color: "#000"
+        color: "#fff",
+        fontFamily: "'lucida grande', tahoma, verdana, arial, sans-serif"
     },
     line: {
-        height: 3,
-        backgroundColor: "#ccc"
+        height: 5,
+        backgroundColor: "#fff"
     }
 });
 

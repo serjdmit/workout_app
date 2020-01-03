@@ -21,8 +21,9 @@ const styles = StyleSheet.create({
     },
     wrapper: {
         flex: 1,
-        backgroundColor: "#DDF1FD",
+        backgroundColor: "rgb(23, 23, 23)",
         maxWidth: "420px",
+        maxHeight: "820px",
         width: "100%"
     }
 });

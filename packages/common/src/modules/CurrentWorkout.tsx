@@ -1,7 +1,13 @@
 import dayjs from "dayjs";
 import { observer } from "mobx-react-lite";
 import * as React from "react";
-import { Button, ScrollView, StyleSheet, View } from "react-native";
+import {
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableHighlight,
+    View
+} from "react-native";
 import { RouteComponentProps } from "react-router-dom";
 import { RootStoreContext } from "../stores/RootStore";
 import { WorkoutCard } from "../ui/WorkoutCard";
@@ -17,11 +23,45 @@ interface Props
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fafafa"
+        backgroundColor: "rgb(23, 23, 23)"
     },
     scrollContainer: {
-        padding: 10,
-        marginBottom: 50
+        padding: 30,
+        marginBottom: 20
+    },
+    buttonShadowLight: {
+        borderRadius: 20,
+        shadowColor: "rgb(100, 100, 100)",
+        shadowOffset: { width: -9, height: -9 },
+        shadowRadius: 16,
+        shadowOpacity: 0.3
+    },
+    heading: {
+        marginHorizontal: "auto",
+        padding: 40,
+        paddingBottom: 20,
+        fontSize: 24,
+        color: "#fff",
+        fontFamily: "'lucida grande', tahoma, verdana, arial, sans-serif"
+    },
+    button: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 20,
+        shadowColor: "#000",
+        shadowOffset: { width: 9, height: 9 },
+        shadowRadius: 16,
+        shadowOpacity: 1,
+        height: 60,
+        width: "100%",
+        padding: 20
+    },
+    buttonText: {
+        fontSize: 18,
+        fontFamily: "tahoma, verdana, arial, sans-serif",
+        fontWeight: "bold",
+        color: "#fff"
     }
 });
 
@@ -45,6 +85,7 @@ export const CurrentWorkout: React.FC<Props> = observer(
 
         return (
             <View style={styles.container}>
+                <Text style={styles.heading}>Current Workout</Text>
                 <ScrollView
                     keyboardShouldPersistTaps="always"
                     contentContainerStyle={styles.scrollContainer}
@@ -79,18 +120,22 @@ export const CurrentWorkout: React.FC<Props> = observer(
                             />
                         );
                     })}
-                    <Button
-                        title="SAVE"
-                        onPress={() => {
-                            if (isCurrentWorkout) {
-                                rootStore.workoutStore.history[
-                                    dayjs().format("YYYY-MM-DD")
-                                ] = rootStore.workoutStore.currentExercises;
-                                rootStore.workoutStore.currentExercises = [];
-                            }
-                            history.push("/");
-                        }}
-                    />
+                    <View style={styles.buttonShadowLight}>
+                        <TouchableHighlight
+                            style={styles.button}
+                            onPress={() => {
+                                if (isCurrentWorkout) {
+                                    rootStore.workoutStore.history[
+                                        dayjs().format("YYYY-MM-DD")
+                                    ] = rootStore.workoutStore.currentExercises;
+                                    rootStore.workoutStore.currentExercises = [];
+                                }
+                                history.push("/");
+                            }}
+                        >
+                            <Text style={styles.buttonText}>Save</Text>
+                        </TouchableHighlight>
+                    </View>
                 </ScrollView>
                 {rootStore.workoutTimerStore.isRunning ? (
                     <WorkoutTimer

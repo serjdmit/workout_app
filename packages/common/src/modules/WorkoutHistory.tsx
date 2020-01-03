@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import * as React from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import { RouteComponentProps } from "react-router";
 import { RootStoreContext } from "../stores/RootStore";
 import { CurrentExercise } from "../stores/WorkoutStore";
@@ -10,12 +10,23 @@ import { HistoryCard } from "../ui/HistoryCard";
 interface Props extends RouteComponentProps {}
 
 const styles = StyleSheet.create({
+    heading: {
+        marginHorizontal: "auto",
+        padding: 40,
+        paddingBottom: 20,
+        fontSize: 24,
+        color: "#fff",
+        fontFamily: "'lucida grande', tahoma, verdana, arial, sans-serif"
+    },
     row: {
-        flexDirection: "row"
+        flexDirection: "row",
+        paddingTop: 20,
+        paddingHorizontal: 20
     },
     cardContainer: {
         flex: 1,
-        padding: 10
+        paddingVertical: 10,
+        paddingHorizontal: 10
     },
     container: {
         flex: 1
@@ -32,7 +43,7 @@ export const WorkoutHistory: React.FC<Props> = observer(({ history }) => {
 
     Object.entries(rootStore.workoutStore.history).forEach(
         ([date, exercises], i) => {
-            if (i % 3 === 0) {
+            if (i % 2 === 0) {
                 rows.push([
                     {
                         date,
@@ -50,6 +61,7 @@ export const WorkoutHistory: React.FC<Props> = observer(({ history }) => {
 
     return (
         <View style={styles.container}>
+            <Text style={styles.heading}>Gym Routine</Text>
             <FlatList
                 renderItem={({ item }) => (
                     <View style={styles.row}>
@@ -67,10 +79,10 @@ export const WorkoutHistory: React.FC<Props> = observer(({ history }) => {
                                 />
                             </View>
                         ))}
-                        {item.length < 3 ? (
+                        {item.length < 2 ? (
                             <View style={styles.cardContainer} />
                         ) : null}
-                        {item.length < 2 ? (
+                        {item.length < 1 ? (
                             <View style={styles.cardContainer} />
                         ) : null}
                     </View>
@@ -130,7 +142,7 @@ export const WorkoutHistory: React.FC<Props> = observer(({ history }) => {
                                     weight: currentSquat
                                 },
                                 {
-                                    exercise: "Barrbell Row",
+                                    exercise: "Barbell Row",
                                     numSets: 5,
                                     reps: 5,
                                     sets: [...emptySets],
@@ -142,7 +154,7 @@ export const WorkoutHistory: React.FC<Props> = observer(({ history }) => {
                                     numSets: 5,
                                     reps: 5,
                                     sets: [...emptySets],
-                                    weight: currentDeadlift
+                                    weight: currentOverheadPress
                                 }
                             );
 

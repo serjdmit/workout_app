@@ -12,7 +12,16 @@ interface Props {
 
 const styles = StyleSheet.create({
     cardContainer: {
-        marginBottom: 10
+        shadowColor: "rgb(100, 100, 100)",
+        shadowOffset: { width: -9, height: -9 },
+        shadowRadius: 16,
+        shadowOpacity: 0.3,
+        marginBottom: 20,
+        borderRadius: 20,
+        paddingTop: 5
+    },
+    card: {
+        backgroundColor: "rgb(23, 23, 23)"
     },
     topRow: {
         flexDirection: "row",
@@ -20,12 +29,14 @@ const styles = StyleSheet.create({
     },
     topRowText: {
         fontSize: 18,
-        fontFamily: "sans-serif"
+        marginBottom: 10,
+        color: "#fff",
+        fontFamily: "'lucida grande', tahoma, verdana, arial, sans-serif"
     },
     bottomRowText: {
         flexDirection: "row",
         justifyContent: "space-between",
-        marginTop: 15
+        marginVertical: 10
     },
     circle: {
         height: 50,
@@ -33,22 +44,30 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 25,
-        backgroundColor: "#08A642",
-        cursor: "pointer"
+        backgroundColor: "#222",
+        cursor: "pointer",
+        shadowColor: "#000",
+        shadowOffset: { width: 9, height: 9 },
+        shadowRadius: 9,
+        shadowOpacity: 1
+    },
+    circleShadow: {
+        borderRadius: 25,
+        shadowColor: "rgb(100, 100, 100)",
+        shadowOffset: { width: -9, height: -9 },
+        shadowRadius: 16,
+        shadowOpacity: 0.3
+    },
+    circleGreen: {
+        shadowColor: "#2d5039"
+    },
+    circleRed: {
+        shadowColor: "#2d5039"
     },
     circleText: {
-        fontFamily: "sans-serif",
+        fontFamily: "'lucida grande', tahoma, verdana, arial, sans-serif",
         fontSize: 20,
         color: "#fff"
-    },
-    darkText: {
-        color: "#aaa"
-    },
-    gray: {
-        backgroundColor: "#ccc"
-    },
-    lightGray: {
-        backgroundColor: "#ddd"
     }
 });
 
@@ -65,41 +84,41 @@ export const WorkoutCard: React.FC<Props> = observer(
                         {sets.map((set, index) => {
                             if (set === "X") {
                                 return (
-                                    <View
-                                        style={[
-                                            styles.circle,
-                                            styles.lightGray
-                                        ]}
-                                    >
-                                        <Text
-                                            style={[
-                                                styles.circleText,
-                                                styles.darkText
-                                            ]}
-                                            key={set + index}
-                                        >
-                                            X
-                                        </Text>
+                                    <View style={styles.circleShadow}>
+                                        <View style={styles.circle}>
+                                            <Text
+                                                style={styles.circleText}
+                                                key={set + index}
+                                            >
+                                                X
+                                            </Text>
+                                        </View>
                                     </View>
                                 );
                             }
                             if (set === "") {
                                 return (
-                                    <TouchableOpacity
-                                        onPress={() => onSetPress(index)}
-                                        style={[styles.circle, styles.gray]}
-                                        key={set + index}
-                                    />
+                                    <View style={styles.circleShadow}>
+                                        <TouchableOpacity
+                                            onPress={() => onSetPress(index)}
+                                            style={styles.circle}
+                                            key={set + index}
+                                        />
+                                    </View>
                                 );
                             }
                             return (
-                                <TouchableOpacity
-                                    onPress={() => onSetPress(index)}
-                                    style={styles.circle}
-                                    key={set + index}
-                                >
-                                    <Text style={styles.circleText}>{set}</Text>
-                                </TouchableOpacity>
+                                <View style={styles.circleShadow}>
+                                    <TouchableOpacity
+                                        onPress={() => onSetPress(index)}
+                                        style={styles.circle}
+                                        key={set + index}
+                                    >
+                                        <Text style={styles.circleText}>
+                                            {set}
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
                             );
                         })}
                     </View>

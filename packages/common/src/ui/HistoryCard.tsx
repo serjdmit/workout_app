@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { CurrentExercise } from "../stores/WorkoutStore";
 import { Card } from "./Сard";
 
@@ -8,6 +8,26 @@ interface Props {
     currentExercises: CurrentExercise[];
     onPress: () => void;
 }
+
+const styles = StyleSheet.create({
+    data: {
+        flex: 1,
+        flexDirection: "row",
+        justifyContent: "space-between"
+    },
+    text: {
+        lineHeight: 25,
+        fontSize: 18,
+        fontFamily: "'lucida grande', tahoma, verdana, arial, sans-serif",
+        color: "#fff"
+    },
+    heading: {
+        fontWeight: "bold",
+        color: "#999",
+        marginBottom: 15,
+        fontFamily: "tahoma, verdana, arial, sans-serif"
+    }
+});
 
 const exerciseShortName = {
     Squat: "SQ",
@@ -24,14 +44,21 @@ export const HistoryCard: React.FC<Props> = ({
 }) => {
     return (
         <Card onPress={onPress}>
-            <Text>{header}</Text>
+            <Text style={[styles.text, styles.heading]}>{header}</Text>
             {currentExercises.map(ce => {
                 return (
-                    <Text key={ce.exercise}>{`${
-                        exerciseShortName[
-                            ce.exercise as keyof typeof exerciseShortName
-                        ]
-                    } ${ce.numSets}x${ce.reps} ${ce.weight}`}</Text>
+                    <View key={ce.exercise} style={styles.data}>
+                        <Text style={styles.text}>
+                            {`${
+                                exerciseShortName[
+                                    ce.exercise as keyof typeof exerciseShortName
+                                ]
+                            }`}{" "}
+                        </Text>
+                        <Text style={styles.text}>
+                            {`${ce.numSets}x${ce.reps} ${ce.weight}`}
+                        </Text>
+                    </View>
                 );
             })}
         </Card>
