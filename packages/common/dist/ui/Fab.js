@@ -28,7 +28,8 @@ var styles = react_native_1.StyleSheet.create({
     text: {
         fontSize: 18,
         color: "#fff",
-        lineHeight: "1"
+        marginLeft: 2,
+        marginBottom: 2
     }
 });
 exports.Fab = function (_a) {
